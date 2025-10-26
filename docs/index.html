@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A simple tool to display and share all crypto addresses from your Trust Wallet handle (user@trust) with a single link.">
+  <title>HandleBridge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="container">
+      <div class="header">
+        <div class="header-content"></div>
+      </div>
+
+      <div class="hero" id="heroSection">
+        <h2 class="hero-title">HandleBridge</h2>
+        <p class="hero-description">
+          The easiest way to share your Trust Wallet addresses. Turn your `@trust` handle into a single, shareable link for everyone.
+        </p>
+      </div>
+
+      <div class="search-section">
+        <div class="search-wrapper">
+          <div class="input-container">
+            <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            <input type="text" id="handleInput" placeholder="Enter your Trust Wallet handle" class="search-input" autocomplete="off">
+            <span class="domain-suffix">@trust</span>
+          </div>
+          <button class="search-btn" id="searchBtn">Lookup</button>
+        </div>
+      </div>
+
+      <div class="guide-section">
+        <p class="guide-text">
+          <strong>How to get a handle:</strong> 
+          Open Trust Wallet app → Settings → @Trust Handles → Register Handle.
+        </p>
+      </div>
+
+      <div id="resultsContainer"></div>
+    </div>
+  </div>
+
+  <footer style="text-align:center; margin-top:40px; padding:20px; font-size:14px; color:#888;">
+    <a href="https://github.com/offici5l/handle-bridge" target="_blank" rel="noopener" style="color:#3b82f6; text-decoration:none; font-weight:500;">
+      Built for the Trust Wallet Community
+    </a>
+  </footer>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>
