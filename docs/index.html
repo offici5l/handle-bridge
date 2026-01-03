@@ -3,57 +3,81 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="A simple tool to display and share all crypto addresses from your Trust Wallet handle (user@trust) with a single link.">
   <title>HandleBridge</title>
+  <base href="/">
+  <meta name="description" content="View and share all public addresses associated with a Trust Wallet handle.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="app-background"></div>
   <div class="app-container">
-    <div class="container">
-      <div class="header">
-        <div class="header-content"></div>
-      </div>
+    <div class="main-card">
+      <header class="header">
+        <div class="logo">HandleBridge</div>
+      </header>
 
       <div class="hero" id="heroSection">
-        <h2 class="hero-title">HandleBridge</h2>
-        <p class="hero-description">
-          The easiest way to share your Trust Wallet addresses. Turn your `@trust` handle into a single, shareable link for everyone.
-        </p>
+        <h1>Share Public Addresses</h1>
+        <p>Turn your Trust Wallet handle into a shareable list of your crypto coins.</p>
+        <a href="https://github.com/offici5l/handle-bridge" target="_blank" class="project-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+          </svg>
+          Open Source
+        </a>
       </div>
 
-      <div class="search-section">
-        <div class="search-wrapper">
-          <div class="input-container">
-            <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="11" cy="11" r="8"></circle>
-              <path d="m21 21-4.35-4.35"></path>
+      <div class="search-section" id="searchSection">
+        <div class="input-group">
+          <input type="text" id="handleInput" placeholder="Enter handle" autocomplete="off">
+          <span class="suffix">@trust</span>
+          <button id="searchBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
-            <input type="text" id="handleInput" placeholder="Enter your Trust Wallet handle" class="search-input" autocomplete="off">
-            <span class="domain-suffix">@trust</span>
-          </div>
-          <button class="search-btn" id="searchBtn">Lookup</button>
+          </button>
         </div>
       </div>
 
-      <div class="guide-section">
-        <p class="guide-text">
-          <strong>How to get a handle:</strong> 
-          Open Trust Wallet app → Settings → @Trust Handles → Register Handle.
-        </p>
+      <div id="resultsContainer" class="hidden">
+        <div class="profile-header">
+          <div class="profile-info">
+            <div class="avatar-placeholder" id="avatarLetter"></div>
+            <div class="handle-details">
+              <h2 id="displayHandle"></h2>
+            </div>
+          </div>
+          <button id="shareProfileBtn" class="icon-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+              <polyline points="16 6 12 2 8 6"></polyline>
+              <line x1="12" y1="2" x2="12" y2="15"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div id="addressesGrid" class="addresses-grid"></div>
       </div>
 
-      <div id="resultsContainer"></div>
+      <div id="loadingState" class="state-container hidden">
+        <div class="spinner"></div>
+        <p>Resolving Handle...</p>
+      </div>
+
+      <div id="errorState" class="state-container hidden">
+        <div class="error-icon">!</div>
+        <h3 id="errorTitle">Error</h3>
+        <p id="errorMsg">Something went wrong</p>
+        <button id="retryBtn">Try Again</button>
+      </div>
     </div>
   </div>
 
-  <footer style="text-align:center; margin-top:40px; padding:20px; font-size:14px; color:#888;">
-    <a href="https://github.com/offici5l/handle-bridge" target="_blank" rel="noopener" style="color:#3b82f6; text-decoration:none; font-weight:500;">
-      Built for the Trust Wallet Community
-    </a>
-  </footer>
+  <div id="toast" class="toast">Copied to clipboard</div>
 
   <script type="module" src="script.js"></script>
 </body>
