@@ -20,7 +20,7 @@ const UI = {
 
 function init() {
   const path = window.location.pathname.replace(/^\/|\/$/g, '');
-  
+
   if (path && path !== 'index.html') {
     loadHandle(decodeURIComponent(path));
   }
@@ -29,7 +29,7 @@ function init() {
   UI.input.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') triggerSearch();
   });
-  
+
   UI.retryBtn.addEventListener('click', () => {
     UI.error.classList.add('hidden');
     UI.searchSection.classList.remove('hidden');
@@ -79,12 +79,12 @@ async function loadHandle(handle) {
   try {
     const data = await fetchAddresses(handle + '@trust');
     const sortedData = sortAddresses(data.public_addresses);
-    
+
     UI.displayHandle.textContent = handle;
     UI.avatar.textContent = handle.charAt(0).toUpperCase();
-    
+
     renderList(sortedData);
-    
+
     UI.loading.classList.add('hidden');
     UI.results.classList.remove('hidden');
   } catch (e) {
@@ -119,13 +119,10 @@ function sortAddresses(list) {
   });
 }
 
-function getDeepLink(chain, address) {
-  const c = chain.toUpperCase();
-  if (c === 'BTC') return `bitcoin:${address}`;
-  if (c === 'ETH') return `ethereum:${address}`;
-  if (c === 'SOL') return `solana:${address}`;
-  if (c === 'BNB') return `binance:${address}`;
-  return null;
+function getDeepLink(chain, address, token_code) {
+  const code = (token_code || chain || '').toLowerCase();
+  if (!code) return null;
+  return `${code}:${address}`;
 }
 
 function renderList(list) {
@@ -137,12 +134,12 @@ function renderList(list) {
 
   list.forEach((item) => {
     if (item.chain_code === 'FIO' && item.token_code === 'FIO') return;
-    
+
     const code = (item.token_code || item.chain_code).toUpperCase();
     const chain = (item.chain_code || '').toUpperCase();
     const iconKey = icons[code] ? icons[code] : (icons[chain] || 'fio');
     const iconUrl = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${iconKey}/info/logo.png`;
-    
+
     const card = document.createElement('div');
     card.className = 'coin-card';
     card.innerHTML = `
@@ -173,19 +170,17 @@ function renderList(list) {
     const content = card.querySelector('.card-content');
     const qrContainer = card.querySelector('.qr-container');
     const icon = card.querySelector('.dropdown-icon');
-    
-    const sendLink = getDeepLink(chain, item.public_address);
-    if (sendLink) {
-      const actions = card.querySelector('.actions');
-      const sendBtn = document.createElement('a');
-      sendBtn.className = 'btn btn-primary';
-      sendBtn.href = sendLink;
-      sendBtn.innerHTML = `
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-        Send
-      `;
-      actions.prepend(sendBtn);
-    }
+
+    const sendLink = getDeepLink(item.chain_code, item.public_address, item.token_code);
+    const actions = card.querySelector('.actions');
+    const sendBtn = document.createElement('a');
+    sendBtn.className = 'btn btn-primary';
+    sendBtn.href = sendLink;
+    sendBtn.innerHTML = `
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+      Send
+    `;
+    actions.prepend(sendBtn);
 
     card.querySelector('.card-top').addEventListener('click', () => {
       const isOpen = content.classList.contains('active');
