@@ -122,9 +122,6 @@ function sortAddresses(list) {
 function getDeepLink(chain, address) {
   const c = chain.toUpperCase();
   if (c === 'BTC') return `bitcoin:${address}`;
-  if (c === 'ETH') return `ethereum:${address}`;
-  if (c === 'SOL') return `solana:${address}`;
-  if (c === 'BNB') return `binance:${address}`;
   return null;
 }
 
