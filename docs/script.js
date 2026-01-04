@@ -119,27 +119,13 @@ function sortAddresses(list) {
   });
 }
 
-function getDeepLink(chain, address, token_code) {
-  const code = (token_code || chain || '').trim().toLowerCase();
-  if (!code || !address) return null;
-  
-  const schemes = {
-    'btc': 'bitcoin',
-    'eth': 'ethereum',
-    'sol': 'solana',
-    'bnb': 'binance',
-    'bch': 'bitcoincash',
-    'ltc': 'litecoin',
-    'doge': 'dogecoin',
-    'xrp': 'ripple',
-    'ada': 'cardano',
-    'dot': 'polkadot',
-    'matic': 'polygon',
-    'trx': 'tron'
-  };
-  
-  const scheme = schemes[code] || code;
-  return `${scheme}:${address}`;
+function getDeepLink(chain, address) {
+  const c = chain.toUpperCase();
+  if (c === 'BTC') return `bitcoin:${address}`;
+  if (c === 'ETH') return `ethereum:${address}`;
+  if (c === 'SOL') return `solana:${address}`;
+  if (c === 'BNB') return `binance:${address}`;
+  return null;
 }
 
 function renderList(list) {
@@ -188,7 +174,7 @@ function renderList(list) {
     const qrContainer = card.querySelector('.qr-container');
     const icon = card.querySelector('.dropdown-icon');
 
-    const sendLink = getDeepLink(item.chain_code, item.public_address, item.token_code);
+    const sendLink = getDeepLink(chain, item.public_address);
     if (sendLink) {
       const actions = card.querySelector('.actions');
       const sendBtn = document.createElement('a');
