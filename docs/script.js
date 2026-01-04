@@ -172,15 +172,17 @@ function renderList(list) {
     const icon = card.querySelector('.dropdown-icon');
 
     const sendLink = getDeepLink(item.chain_code, item.public_address, item.token_code);
-    const actions = card.querySelector('.actions');
-    const sendBtn = document.createElement('a');
-    sendBtn.className = 'btn btn-primary';
-    sendBtn.href = sendLink;
-    sendBtn.innerHTML = `
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-      Send
-    `;
-    actions.prepend(sendBtn);
+    if (sendLink) {
+      const actions = card.querySelector('.actions');
+      const sendBtn = document.createElement('a');
+      sendBtn.className = 'btn btn-primary';
+      sendBtn.href = sendLink;
+      sendBtn.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+        Send
+      `;
+      actions.prepend(sendBtn);
+    }
 
     card.querySelector('.card-top').addEventListener('click', () => {
       const isOpen = content.classList.contains('active');
