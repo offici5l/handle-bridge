@@ -120,9 +120,26 @@ function sortAddresses(list) {
 }
 
 function getDeepLink(chain, address, token_code) {
-  const code = (token_code || chain || '').toLowerCase();
-  if (!code) return null;
-  return `${code}:${address}`;
+  const code = (token_code || chain || '').trim().toLowerCase();
+  if (!code || !address) return null;
+  
+  const schemes = {
+    'btc': 'bitcoin',
+    'eth': 'ethereum',
+    'sol': 'solana',
+    'bnb': 'binance',
+    'bch': 'bitcoincash',
+    'ltc': 'litecoin',
+    'doge': 'dogecoin',
+    'xrp': 'ripple',
+    'ada': 'cardano',
+    'dot': 'polkadot',
+    'matic': 'polygon',
+    'trx': 'tron'
+  };
+  
+  const scheme = schemes[code] || code;
+  return `${scheme}:${address}`;
 }
 
 function renderList(list) {
